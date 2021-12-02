@@ -10,3 +10,10 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+
+/* TODO: 
+    Add Unit Tests to FSM
+    Finish trigger transition logic
+    Include Rapidjson for JSON Parse
+*/
