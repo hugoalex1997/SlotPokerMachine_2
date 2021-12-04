@@ -3,6 +3,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 
 # set the project name
 project(GAME)
+set(BINARY ${CMAKE_PROJECT_NAME})
 
 # Include cmake util functions
 include(${CMAKE_SOURCE_DIR}/utils/cmake/utils.cmake)
@@ -22,6 +23,11 @@ file(GLOB_RECURSE SOURCES
 include_directories(src)
 
 # add the executable
-add_executable(GAME main.cpp ${SOURCES})
+add_executable(${BINARY} main.cpp ${SOURCES})
 
-target_link_libraries(GAME sfml-graphics sfml-audio sfml-system sfml-window)
+target_link_libraries(${BINARY} sfml-graphics sfml-audio sfml-system sfml-window)
+
+add_library(${BINARY}_lib STATIC ${SOURCES})
+
+add_subdirectory(test)
+add_subdirectory(external/googletest)
