@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 
 
 /* TODO: 
-    Add Unit Tests to FSM
-    Finish trigger transition logic
+	Add Observer Pattern to FSM
     Include Rapidjson for JSON Parse
+	
 */

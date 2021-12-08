@@ -7,38 +7,41 @@ FiniteStateMachine* FiniteStateMachine::Instance() {
     return &instance;
 }
 
-void FiniteStateMachine::AddTransition(Transition transition) {
+void FiniteStateMachineImplementation::AddTransition(Transition transition) {
     transitions.emplace_back(transition);
     trigger_map[transition.getTrigger()] = transition;
 }
 
-void FiniteStateMachine::AddTransition(std::string trigger, std::vector<std::string> from, std::string to) {
+void FiniteStateMachineImplementation::AddTransition(std::string trigger, std::vector<std::string> from, std::string to) {
     this->AddTransition(Transition(trigger,from,to));
 }
 
-void FiniteStateMachine::AddState(State state) {
+void FiniteStateMachineImplementation::AddState(State state) {
     states.emplace_back(state);
 }
 
-void FiniteStateMachine::AddState(std::string id) {
+void FiniteStateMachineImplementation::AddState(std::string id) {
     this->AddState(State(id));
 }
 
 
-bool FiniteStateMachine::TriggerTransition(std::string trigger) {
+bool FiniteStateMachineImplementation::TriggerTransition(std::string trigger) {
     auto _elem = trigger_map.find(trigger);
 
     if(_elem == trigger_map.end()) {
-        std::cout<< "Unknown transition" << std::endl;
+        std::cout<< "Warning: Unknown transition" << std::endl;
+        return false;
     }
 
     auto _transition = _elem->second;
     auto _from = _transition.getFrom();
     for(int i=0; i<_from.size();i++) {
         if(_from[i] == currentState.getId()) {
-            //TODO: Add transition logic
-            //TODO: Add debug logic
-            std::cout<< "TriggerTransition Available" << std::endl;
+            setPreviousState(currentState.getId());
+            setCurrentState(_transition.getTo());
+            std::cout << "Trigger '" << _transition.getTrigger() << "' from '" 
+                        << previousState.getId() << "' to '" 
+                        << _transition.getTo() << "'" << std::endl;
             return true;
         }
     }
