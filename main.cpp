@@ -13,7 +13,9 @@ int main(int argc, char** argv)
 
 
 /* TODO: 
-	Add Observer Pattern to FSM
+	Add Game Controller
+	Add Game View 
     Include Rapidjson for JSON Parse
+	Analyse how to include only header file name, instead of path
 	
 */

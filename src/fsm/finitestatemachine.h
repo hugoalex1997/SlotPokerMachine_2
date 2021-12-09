@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <functional>
 
 
 
@@ -60,7 +61,10 @@ class State {
 	     */
         State(std::string id) : id(std::move(id)) {}
 
+		State(std::string id,std::function<void()> onEnter) : id(std::move(id)), onEnter(onEnter) {}
+
         std::string getId() const { return id; }
+		std::function<void()> onEnter = []() {};
 };
 
 class FiniteStateMachineImplementation {

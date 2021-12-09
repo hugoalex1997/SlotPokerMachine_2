@@ -1,21 +1,21 @@
 #include "gtest/gtest.h"
-#include "finitestatemachine.h"
+#include "gmock/gmock.h"
 
-class FiniteStateMachineTest : public FiniteStateMachineImplementation {
-    
-    public:
-    FiniteStateMachineTest() {};
+#include "fsm/finitestatemachine.h"
+
+struct MockFiniteStateMachine : public FiniteStateMachineImplementation {
+    MockFiniteStateMachine() {};
 };
 
 TEST(FiniteStateMachine,FiniteStateMachineInitialization) {
 
-    auto fsm = new FiniteStateMachineTest();
+    auto fsm = new MockFiniteStateMachine();
     ASSERT_EQ(fsm->getCurrentState(),"");  
 }
 
 TEST(FiniteStateMachine,FiniteStateMachineTrigger) {
 
-    auto fsm = new FiniteStateMachineTest();
+    auto fsm = new MockFiniteStateMachine();
     fsm->AddState("idle");
     fsm->AddTransition("loaded",std::vector<std::string> {""},"idle");
     fsm->TriggerTransition("loaded");

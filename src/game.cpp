@@ -1,8 +1,8 @@
 #include <iostream>
 
 #include "game.h"
-#include "finitestatemachine.h"
-
+#include "fsm/finitestatemachine.h"
+//#include "accounting/accounting.h"
 
 
 Game* Game::Instance() {

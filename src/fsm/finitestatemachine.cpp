@@ -34,11 +34,18 @@ bool FiniteStateMachineImplementation::TriggerTransition(std::string trigger) {
     }
 
     auto _transition = _elem->second;
-    auto _from = _transition.getFrom();
-    for(int i=0; i<_from.size();i++) {
-        if(_from[i] == currentState.getId()) {
-            setPreviousState(currentState.getId());
-            setCurrentState(_transition.getTo());
+    auto _fromVec = _transition.getFrom();
+
+    for(auto & _from : _fromVec) {
+        if(_from == currentState.getId()) {
+			for (auto& _state : states) {
+				if (_state.getId() == _transition.getTo()) {
+					previousState = currentState;
+					currentState = _state;
+					//TODO: How can i test if onEnter was called?
+					currentState.onEnter();
+				}
+			}
             std::cout << "Trigger '" << _transition.getTrigger() << "' from '" 
                         << previousState.getId() << "' to '" 
                         << _transition.getTo() << "'" << std::endl;

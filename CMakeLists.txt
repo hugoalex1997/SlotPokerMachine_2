@@ -20,6 +20,8 @@ file(GLOB_RECURSE SOURCES
         #external/rapidjson/*.h
         )
 
+set(CMAKE_BUILD_TYPE Debug)
+
 include_directories(src)
 
 # add the executable
