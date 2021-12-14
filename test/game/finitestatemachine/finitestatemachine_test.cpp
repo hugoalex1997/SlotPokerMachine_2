@@ -10,12 +10,14 @@ struct MockFiniteStateMachine : public FiniteStateMachineImplementation {
 TEST(FiniteStateMachine,FiniteStateMachineInitialization) {
 
     auto fsm = new MockFiniteStateMachine();
+	//std::cout << &fsm << std::endl;
     ASSERT_EQ(fsm->getCurrentState(),"");  
 }
 
 TEST(FiniteStateMachine,FiniteStateMachineTrigger) {
 
     auto fsm = new MockFiniteStateMachine();
+	//std::cout << &fsm << std::endl;
     fsm->AddState("idle");
     fsm->AddTransition("loaded",std::vector<std::string> {""},"idle");
     fsm->TriggerTransition("loaded");

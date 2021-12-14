@@ -8,10 +8,13 @@ class AccountingImplementation {
 	void setCredits(unsigned int credits_) { credits = credits_; }
 
 public:
-
+	// Implementation
 	void AddMoney(unsigned int amount);
+	bool StartPlay(unsigned int bet);
+
+	//Getters and Setters
 	unsigned int getCredits() const { return credits; }
-	
+
 };
 
 class Accounting {
@@ -23,6 +26,7 @@ public:
 	static Accounting* Instance();
 
 	void AddMoney(unsigned int amount) {impl.AddMoney(amount);}
+	bool StartPlay(unsigned int bet) {impl.StartPlay(bet);}
 	unsigned int getCredits() const {return impl.getCredits();}
 
 

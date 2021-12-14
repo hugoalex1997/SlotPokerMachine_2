@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FiniteStateMachine_H
-#define _FiniteStateMachine_H
+#ifndef _FINITESTATEMACHINE_H
+#define _FINITESTATEMACHINE_H
 
 #include <iostream>
 #include <vector>
@@ -125,4 +125,4 @@ class FiniteStateMachine {
 };  
 
 
-#endif //_FiniteStateMachine_H
+#endif //_FINITESTATEMACHINE_H

@@ -36,7 +36,7 @@ bool FiniteStateMachineImplementation::TriggerTransition(std::string trigger) {
     auto _transition = _elem->second;
     auto _fromVec = _transition.getFrom();
 
-    for(auto & _from : _fromVec) {
+    for(auto& _from : _fromVec) {
         if(_from == currentState.getId()) {
 			for (auto& _state : states) {
 				if (_state.getId() == _transition.getTo()) {

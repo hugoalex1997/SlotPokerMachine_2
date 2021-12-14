@@ -5,9 +5,9 @@
 // #include "rapidjson/stringbuffer.h"
 
 int main(int argc, char** argv)
-{
-    Game::Instance()->Run();
-
+{	
+	Game game;
+	game.Run();
     return 0;
 }
 
