@@ -5,7 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 project(GAME)
 set(BINARY ${CMAKE_PROJECT_NAME})
 
-# Include cmake util functions
+# Include cmake utils functions
 include(${CMAKE_SOURCE_DIR}/utils/cmake/utils.cmake)
 
 # Downloads SFML library
