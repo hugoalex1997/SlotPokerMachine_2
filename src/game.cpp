@@ -1,6 +1,7 @@
 #include <iostream>
-
 #include "game.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 void Game::Run() {
     std::cout << " Start Game Loading" << std::endl;
@@ -30,7 +31,15 @@ void Game::Run() {
 	);
 
 	fsm->TriggerTransition("loaded");
-	std::cout << " Finished Loading" << std::endl;
+	std::cout << "Finished Loading" << std::endl;
+
+	
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
+
+	while(running) {
+		//TODO: Create View to Idle
+
+	}
 }
 
 void Game::CreateFSM(std::vector<State> states,std::vector<Transition> transitions) {
@@ -55,7 +64,7 @@ void Game::PauseGame() {
 	//TODO: Add Pause trigger
 }
 
-bool Game::AddMoney(int amount) {
+void Game::AddMoney(int amount) {
 	accounting->AddMoney(amount);
 }
 
@@ -74,18 +83,18 @@ void Game::ChangeBet(bool increment) {
 	}
 }
 
-void Game::ChangeBetLines(bool increment) {
+void Game::ChangeLines(bool increment) {
 	//TODO: Implement MaxLines and MinLines
 	if(increment) {
-		if(this->getBetLines() == this->getMaxBetLines()) {
+		if(this->getLines() == this->getMaxLines()) {
 			return;
 		}
-		this->setBetLines(this->getBetLines()+1);
+		this->setLines(this->getLines()+1);
 	} else {
-		if(this->getBetLines() == 1) {
+		if(this->getLines() == 1) {
 			return;
 		}
-		this->setBetLines(this->getBetLines()-1);
+		this->setLines(this->getLines()-1);
 	}
 
 }

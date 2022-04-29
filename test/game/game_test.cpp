@@ -26,16 +26,16 @@ TEST(Game,BetChange) {
 	ASSERT_EQ(game.getBet(),1);
 }
 
-TEST(Game,BetLinesChange) {
+TEST(Game,LinesChange) {
 	Game game;
 	game.Run();
 
-	ASSERT_EQ(game.getBetLines(),1);
-	game.ChangeBetLines(false);
-	ASSERT_EQ(game.getBetLines(),1);
-	game.ChangeBetLines(true);
-	ASSERT_EQ(game.getBetLines(),2);
-	game.ChangeBetLines(false);
-	ASSERT_EQ(game.getBetLines(),1);
+	ASSERT_EQ(game.getLines(),1);
+	game.ChangeLines(false);
+	ASSERT_EQ(game.getLines(),1);
+	game.ChangeLines(true);
+	ASSERT_EQ(game.getLines(),2);
+	game.ChangeLines(false);
+	ASSERT_EQ(game.getLines(),1);
 	
 }

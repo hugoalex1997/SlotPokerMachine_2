@@ -19,7 +19,7 @@ class Game {
     void Run();
 	bool StartPlay();
 	void PauseGame();
-	bool AddMoney(int amount);
+	void AddMoney(int amount);
 	/**
 	 * @brief Change Game Bet
 	 * 
@@ -31,24 +31,26 @@ class Game {
 	 * 
 	 * @param increment In case of this parameter be true the number of lines to bet should increment by one, otherwise decrement by one.
 	 */
-	void ChangeBetLines(bool increment);
+	void ChangeLines(bool increment);
 
 	unsigned int getBet() const { return bet; }
-	unsigned char getBetLines() const { return betLines; }
+	unsigned char getLines() const { return lines; }
 
 	unsigned int getMaxBet() const { return maxBet; }
-	unsigned char getMaxBetLines() const { return maxBetLines; }
+	unsigned char getMaxLines() const { return maxLines; }
 	
     private:
 	void CreateFSM(std::vector<State> states,std::vector<Transition> transitions);
 
 	void setBet(unsigned int bet_) { bet = bet_; }
-	void setBetLines(unsigned int betLines_) { betLines = betLines_; }
+	void setLines(unsigned int Lines_) { lines = Lines_; }
 	unsigned int bet {1};
-	unsigned char betLines {1};
+	unsigned char lines {1};
 
 	unsigned int maxBet {MAX_BET};
-	unsigned char maxBetLines {MAX_LINES};
+	unsigned char maxLines {MAX_LINES};
+	
+	bool running{true};
 	
 };
 

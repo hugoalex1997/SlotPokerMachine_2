@@ -26,7 +26,7 @@ public:
 	static Accounting* Instance();
 
 	void AddMoney(unsigned int amount) {impl.AddMoney(amount);}
-	bool StartPlay(unsigned int bet) {impl.StartPlay(bet);}
+	bool StartPlay(unsigned int bet) {return impl.StartPlay(bet);}
 	unsigned int getCredits() const {return impl.getCredits();}
 
 
