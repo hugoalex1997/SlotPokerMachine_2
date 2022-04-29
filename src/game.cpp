@@ -1,7 +1,9 @@
 #include <iostream>
+
+
+
 #include "game.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
+
 
 void Game::Run() {
     std::cout << " Start Game Loading" << std::endl;
@@ -34,8 +36,7 @@ void Game::Run() {
 	std::cout << "Finished Loading" << std::endl;
 
 	
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
-
+	view.init();
 	while(running) {
 		//TODO: Create View to Idle
 

@@ -2,9 +2,12 @@
 #ifndef _GAME_H
 #define _GAME_H
 
+#include <vector>
+
 #include "fsm/finitestatemachine.h"
 #include "accounting/accounting.h"
-#include <vector>
+#include "view/view.h"
+
 
 #define MAX_BET 100
 #define MAX_LINES 5
@@ -15,6 +18,7 @@ class Game {
 
 	FiniteStateMachine* fsm = FiniteStateMachine::Instance();
 	Accounting* accounting = Accounting::Instance();
+	GameView view;
 
     void Run();
 	bool StartPlay();
