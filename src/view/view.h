@@ -2,11 +2,20 @@
 #ifndef _VIEW_H
 #define _VIEW_H
 
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+
 class GameView {
     
 public:
     GameView();
-    void init();
+    sf::RenderWindow* GetWindow();
+private:
+    
+    sf::RenderWindow* CreateWindow();
+    void update();
+
+    sf::RenderWindow* window{nullptr};
 };
 
 

@@ -12,13 +12,15 @@
 #define MAX_BET 100
 #define MAX_LINES 5
 class Game {
-    public:
+public:
 
     Game() {};
 
 	FiniteStateMachine* fsm = FiniteStateMachine::Instance();
 	Accounting* accounting = Accounting::Instance();
-	GameView view;
+	GameView* view{nullptr};
+
+	virtual GameView* CreateGameView();
 
     void Run();
 	bool StartPlay();
@@ -43,7 +45,8 @@ class Game {
 	unsigned int getMaxBet() const { return maxBet; }
 	unsigned char getMaxLines() const { return maxLines; }
 	
-    private:
+private:
+
 	void CreateFSM(std::vector<State> states,std::vector<Transition> transitions);
 
 	void setBet(unsigned int bet_) { bet = bet_; }
@@ -53,7 +56,8 @@ class Game {
 
 	unsigned int maxBet {MAX_BET};
 	unsigned char maxLines {MAX_LINES};
-	
+protected:
+
 	bool running{true};
 	
 };

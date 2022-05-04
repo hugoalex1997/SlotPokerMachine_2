@@ -2,19 +2,21 @@
 
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
+
 
 GameView::GameView() {
-    std::cout << "default constructor" << std::endl;
+    window = this->CreateWindow();
 }
 
-void GameView::init() {
+sf::RenderWindow* GameView::CreateWindow() {
+    auto* _window = new sf::RenderWindow(sf::VideoMode(800, 600), "Game");
+    return _window;
+}
 
-    std::cout << "init" << std::endl;
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
-    //TODO: study multithreading to implement on view and main
-    while() {
+sf::RenderWindow* GameView::GetWindow() {
+    return window;
+}
 
-    }
+void update() {
+    std::cout << "Game View Update" << std::endl;
 }

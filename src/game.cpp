@@ -35,12 +35,17 @@ void Game::Run() {
 	fsm->TriggerTransition("loaded");
 	std::cout << "Finished Loading" << std::endl;
 
-	
-	view.init();
+	view = this->CreateGameView();
 	while(running) {
-		//TODO: Create View to Idle
 
 	}
+	std::cout << "Closing Game" << std::endl;
+}
+
+GameView* Game::CreateGameView() {
+	std::cout << "Creating Game View" << std::endl;
+	auto* _gameView = new GameView();
+	return _gameView;
 }
 
 void Game::CreateFSM(std::vector<State> states,std::vector<Transition> transitions) {

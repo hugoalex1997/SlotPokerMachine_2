@@ -3,9 +3,15 @@
 
 #include "game.h"
 
-//TODO: Mock View
+
+struct GameMock : public Game {
+	MOCK_METHOD0(CreateGameView, GameView*());
+	GameMock() {running = false;};
+};
+
 TEST(Game,StartPlay) {
-	Game game;
+	GameMock game;
+	EXPECT_CALL(game,CreateGameView());
 	game.Run();
 	ASSERT_EQ(game.StartPlay(),false);
 	game.AddMoney(10);
@@ -15,8 +21,8 @@ TEST(Game,StartPlay) {
 }
 
 TEST(Game,BetChange) {
-	Game game;
-	game.Run();
+	GameMock game;
+
 	ASSERT_EQ(game.getBet(),1);
 	game.ChangeBet(false);
 	ASSERT_EQ(game.getBet(),1);
@@ -27,9 +33,8 @@ TEST(Game,BetChange) {
 }
 
 TEST(Game,LinesChange) {
-	Game game;
-	game.Run();
-
+	GameMock game;
+	
 	ASSERT_EQ(game.getLines(),1);
 	game.ChangeLines(false);
 	ASSERT_EQ(game.getLines(),1);
