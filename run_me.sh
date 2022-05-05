@@ -31,7 +31,6 @@ case $1 in
             cd cmake-build-debug/bin && ./GAME && cd ../../
         ;;
         -t|--test)
-			cd cmake-build-debug && make && cd ..
             cd cmake-build-debug/test/bin && ./GAME_tst && cd ../../../
         ;;
         -h|--help|*)
