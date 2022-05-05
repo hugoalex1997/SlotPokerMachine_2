@@ -9,11 +9,14 @@ class GameView {
     
 public:
     GameView();
-    sf::RenderWindow* GetWindow();
+    void Update();
+    void Close();
+    bool isOpen();
+    void Clear();
 private:
     
     sf::RenderWindow* CreateWindow();
-    void update();
+    
 
     sf::RenderWindow* window{nullptr};
 };

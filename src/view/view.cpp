@@ -13,10 +13,18 @@ sf::RenderWindow* GameView::CreateWindow() {
     return _window;
 }
 
-sf::RenderWindow* GameView::GetWindow() {
-    return window;
+void GameView::Update() {
+    window->display();
 }
 
-void update() {
-    std::cout << "Game View Update" << std::endl;
+void GameView::Close() {
+    window->close();
+}
+
+bool GameView::isOpen() {
+    return window->isOpen();
+}
+
+void GameView::Clear() {
+    window->clear();
 }

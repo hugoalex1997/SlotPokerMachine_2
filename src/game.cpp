@@ -36,10 +36,16 @@ void Game::Run() {
 	std::cout << "Finished Loading" << std::endl;
 
 	view = this->CreateGameView();
-	while(running) {
-
+	//TODO: Lock FPS here
+	while(running && view->isOpen()) {
+		this->Update();
 	}
+	view->Close();
 	std::cout << "Closing Game" << std::endl;
+}
+
+void Game::Update() {
+	view->Update();
 }
 
 GameView* Game::CreateGameView() {

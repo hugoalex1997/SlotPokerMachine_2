@@ -14,8 +14,6 @@ int main(int argc, char** argv)
 
 /* TODO: 
 	Add Game Controller
-	Add Game View 
-    Include Rapidjson for JSON Parse
 	Analyse how to include only header file name, instead of path
-	
+	Add InputManager For Mouse and Keyboard
 */

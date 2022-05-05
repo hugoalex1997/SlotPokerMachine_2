@@ -46,7 +46,7 @@ public:
 	unsigned char getMaxLines() const { return maxLines; }
 	
 private:
-
+	void Update();
 	void CreateFSM(std::vector<State> states,std::vector<Transition> transitions);
 
 	void setBet(unsigned int bet_) { bet = bet_; }
