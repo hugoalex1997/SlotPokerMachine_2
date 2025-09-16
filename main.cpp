@@ -6,13 +6,13 @@
 #include <SFML/Graphics.hpp>
 
 int main() {
-  Game game;
-  game.Run();
-  return 0;
+	Game game;
+	game.Run();
+	return 0;
 }
 
 /* TODO:
-        Add Game Controller
-        Analyse how to include only header file name, instead of path
-        Add InputManager For Mouse and Keyboard
+		Add Game Controller
+		Analyse how to include only header file name, instead of path
+		Add InputManager For Mouse and Keyboard
 */

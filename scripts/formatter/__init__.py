@@ -3,9 +3,12 @@ import sys
 
 import scripts.utils as utils
 
-cpp_files = glob.glob("src/*.cpp")
-hpp_files = glob.glob("src/*.hpp")
-all_files = cpp_files + hpp_files
+main = ["main.cpp"]
+cpp_files = glob.glob("src/**/*.cpp", recursive=True)
+hpp_files = glob.glob("src/**/*.hpp", recursive=True)
+h_files = glob.glob("src/**/*.h", recursive=True)
+
+all_files = main + cpp_files + hpp_files + h_files
     
 def run_clang_format():
     for file_path in all_files:
