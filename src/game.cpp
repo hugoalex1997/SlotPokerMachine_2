@@ -1,6 +1,8 @@
 #include "game.h"
 #include <iostream>
+#include "sdk/sleep.h"
 
+Game::~Game() { view->Close(); }
 void Game::Run() {
 	std::cout << " Start Game Loading" << std::endl;
 
@@ -23,15 +25,34 @@ void Game::Run() {
 	std::cout << "Finished Loading" << std::endl;
 
 	view = this->CreateGameView();
-	// TODO: Lock FPS here
-	while (running && view->isOpen()) {
-		this->Update();
+
+	using clock = std::chrono::steady_clock;
+
+	constexpr std::chrono::milliseconds tick{
+		16,	 // ~60 FPS
+	};
+
+	auto prev = clock::now();
+	auto next = prev + tick;
+
+	while (running && view->IsOpen()) {
+		const auto now = clock::now();
+		const auto delta = now - prev;
+
+		{  //
+			this->Process(delta);
+		}
+		prev = now;
+		sdk::SleepUntil(next);
+		next += tick;
 	}
 	view->Close();
 	std::cout << "Closing Game" << std::endl;
 }
 
-void Game::Update() { view->Update(); }
+void Game::Process(std::chrono::nanoseconds delta) {  //
+	view->Process(delta);
+}
 
 GameView* Game::CreateGameView() {
 	std::cout << "Creating Game View" << std::endl;

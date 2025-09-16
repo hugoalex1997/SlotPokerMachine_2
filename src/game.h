@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <vector>
 
 #include "accounting/accounting.h"
@@ -10,7 +11,9 @@
 #define MAX_LINES 5
 class Game {
 public:
-	Game() {};
+	Game() = default;
+
+	~Game();
 
 	FiniteStateMachine* fsm = FiniteStateMachine::Instance();
 	Accounting* accounting = Accounting::Instance();
@@ -44,7 +47,7 @@ public:
 	unsigned char getMaxLines() const { return maxLines; }
 
 private:
-	void Update();
+	void Process(std::chrono::nanoseconds delta);
 	void CreateFSM(std::vector<State> states, std::vector<Transition> transitions);
 
 	void setBet(unsigned int bet_) { bet = bet_; }
