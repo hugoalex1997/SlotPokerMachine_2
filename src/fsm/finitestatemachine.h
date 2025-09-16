@@ -1,13 +1,9 @@
 #pragma once
-#ifndef _FINITESTATEMACHINE_H
-#define _FINITESTATEMACHINE_H
 
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <functional>
-
-
 
 class Transition {
 
@@ -124,5 +120,3 @@ class FiniteStateMachine {
 
 };  
 
-
-#endif //_FINITESTATEMACHINE_H

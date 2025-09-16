@@ -1,6 +1,4 @@
-#ifndef _Accounting_H
-#define _Accounting_H
-
+#pragma once
 
 class AccountingImplementation {
 
@@ -31,5 +29,3 @@ public:
 
 
 };
-
-#endif //_Accounting_H

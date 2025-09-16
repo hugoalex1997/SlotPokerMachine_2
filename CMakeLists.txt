@@ -1,35 +1,31 @@
-cmake_minimum_required(VERSION 3.10)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
-
-# set the project name
-project(GAME)
+cmake_minimum_required(VERSION 3.15)
+project(SPokerM)
 set(BINARY ${CMAKE_PROJECT_NAME})
 
-# Include cmake utils functions
-include(${CMAKE_SOURCE_DIR}/utils/cmake/utils.cmake)
 
-# Downloads SFML library
-downloadSFML()
-
-set(SFML_DIR "external/SFML-2.5.1/lib/cmake/SFML")
-find_package(SFML 2.5 COMPONENTS graphics audio system window REQUIRED)
-
-
-file(GLOB_RECURSE SOURCES
-        src/*.cpp
-        #external/rapidjson/*.h
-        )
-
+# Defina o padrão de compilação
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_BUILD_TYPE Debug)
 
-include_directories(src)
 
-# add the executable
-add_executable(${BINARY} main.cpp ${SOURCES})
+# All warnings
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion)
+elseif(MSVC)
+  add_compile_options(/Wall /permissive- /W4)
+endif()
 
-target_link_libraries(${BINARY} sfml-graphics sfml-audio sfml-system sfml-window)
 
-add_library(${BINARY}_lib STATIC ${SOURCES})
+# Conan packages
+find_package(SFML REQUIRED COMPONENTS graphics window system)
+find_package(GTest REQUIRED)
 
-add_subdirectory(test)
-add_subdirectory(external/googletest)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+set(SOURCE_FILES main.cpp src/game.cpp src/fsm/finitestatemachine.cpp
+                 src/accounting/accounting.cpp src/view/view.cpp)
+
+add_executable(${BINARY} ${SOURCE_FILES})
+
+target_link_libraries(${BINARY} PRIVATE sfml-graphics sfml-window sfml-system)
