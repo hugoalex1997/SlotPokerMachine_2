@@ -19,7 +19,7 @@ def help_print():
 
 
 def run_binary():
-    command = "./build/SPokerM"
+    command = "./build/frontend/frontend"
     utils.run_command(command)
 
 
