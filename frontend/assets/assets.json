@@ -1,0 +1,37 @@
+{
+  "version": "1.0.0",
+  "assets": [
+    {
+      "name": "start_button",
+      "type": "texture",
+      "path": "images/start.png"
+    },
+    {
+      "name": "bet_button",
+      "type": "texture",
+      "path": "images/bet.png"
+    },
+    {
+      "name": "cashin_button",
+      "type": "texture",
+      "path": "images/cashin.png"
+    },
+    {
+      "name": "cashout_button",
+      "type": "texture",
+      "path": "images/cashout.png"
+    },
+    {
+      "name": "cards",
+      "type": "spritesheet",
+      "path": "images/cards.png",
+      "columns": 13,
+      "rows": 4
+    },
+    {
+      "name": "cape",
+      "type": "texture",
+      "path": "images/poker_cape.jpg"
+    }
+  ]
+}

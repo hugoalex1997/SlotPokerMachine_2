@@ -1,26 +1,52 @@
 #include "view.hpp"
 
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <memory>
+#include "assetsmanager.hpp"
+#include "scene.hpp"
+#include "defines.hpp"
 
 namespace frontend {
 
 	GameView::GameView() {	//
-		window = std::make_unique<sf::RenderWindow>(sf::VideoMode(800, 600), "Game");
+		mAssetsmgr = std::make_unique<AssetsManager>();
+		mWindow = std::make_unique<sf::RenderWindow>(sf::VideoMode(WINDOWSIZE_WIDHT, WINDOWSIZE_HEIGHT), "Game");
+		mScene = std::make_unique<Scene>("main", true);
+	}
+
+	GameView::~GameView() = default;
+
+	bool GameView::Initialize() {  //
+		if (!mAssetsmgr->LoadAssets()) {
+			std::cout << "Failed to load assets!" << std::endl;
+			return false;
+		}
+
+		mScene->AttachAssetsManager(mAssetsmgr.get());
+
+		if (!mScene->LoadScene()) {
+			std::cout << "Failed to load scene!" << std::endl;
+			return false;
+		}
+
+		return true;
 	}
 
 	void GameView::Close() {  //
-		window->close();
+		mWindow->close();
 	}
 
 	void GameView::clear() {  //
-		window->clear();
+		mWindow->clear();
 	}
 
 	void GameView::Process(const std::chrono::nanoseconds delta) {
 		sf::Event event;
-		while (window->pollEvent(event)) {
+		while (mWindow->pollEvent(event)) {
 			switch (event.type) {
 				case sf::Event::Closed: {
 					Close();
@@ -42,27 +68,23 @@ namespace frontend {
 					break;
 			}
 
-			window->clear(sf::Color::Black);
-
 			draw();
-
-			window->display();
 		}
 	}
 
 	void GameView::draw() {
-		window->clear(sf::Color::Black);
+		mWindow->clear(sf::Color::Black);
 
-		// TODO(hg): implement draw logic
+		mScene->Draw(*mWindow);
 
-		window->display();
+		mWindow->display();
 	}
 
 	void GameView::resize(const unsigned int width, const unsigned int height) {
 		std::cout << "Window Resized: y - " << width << "x - " << height << std::endl;
 
 		sf::FloatRect visibleArea(0, 0, static_cast<float>(width), static_cast<float>(height));
-		window->setView(sf::View(visibleArea));
+		mWindow->setView(sf::View(visibleArea));
 	}
 
 	void GameView::keyboardButtonPressed(const sf::Event::KeyEvent& keyboard) {

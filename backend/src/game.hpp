@@ -22,7 +22,6 @@ namespace backend {
 
 		~Game() = default;
 
-		
 		[[nodiscard]] const uint64_t GetCurrentCredits() const { return mAccounting->GetCredits(); }
 
 		[[nodiscard]] uint64_t GetCurrentBet() const { return mBetLevel * mLines; };

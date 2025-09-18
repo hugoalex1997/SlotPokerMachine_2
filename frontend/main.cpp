@@ -3,13 +3,19 @@
 #include <iostream>
 #include <sdk/sleep.hpp>
 #include "../backend/api.hpp"
-#include "view.hpp"
+#include "src/view.hpp"
+
+#include <nlohmann/json.hpp>
 
 int main() {
 	std::cout << "Initializing Frontend" << std::endl;
 
 	backend::API api;
 	frontend::GameView view{};
+	if (!view.Initialize()) {
+		std::cout << "Failed to initialize frontend!" << std::endl;
+		return -1;
+	}
 
 	using clock = std::chrono::steady_clock;
 
@@ -29,7 +35,7 @@ int main() {
 		}
 
 		prev = now;
-		sdk::SleepUntil(next);
+		sdk::sleep::SleepUntil(next);
 		next += tick;
 	}
 	std::cout << "Closing Frontend" << std::endl;

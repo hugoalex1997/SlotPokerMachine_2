@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-namespace sdk {
+namespace sdk::sleep {
 	template <class ClockT, class DurationT>
 	inline void SleepUntil(const std::chrono::time_point<ClockT, DurationT>& tp) {
 		std::this_thread::sleep_until(tp - std::chrono::microseconds(10));
@@ -14,4 +14,4 @@ namespace sdk {
 	inline void SleepFor(const std::chrono::duration<RepT, PeriodT>& duration) {
 		std::this_thread::sleep_for(duration);
 	}
-}  // namespace sdk
+}  // namespace sdk::sleep

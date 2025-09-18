@@ -12,15 +12,15 @@ namespace backend {
 		~API();
 
 		//================================ Getters ================================//
-		
+
 		[[nodiscard]] uint64_t GetCurrentCredits() const;
-		
+
 		[[nodiscard]] uint64_t GetCurrentBet() const;
-		
+
 		[[nodiscard]] uint8_t GetCurrentBetLevel() const;
-		
+
 		[[nodiscard]] uint8_t GetCurrentLines() const;
-		
+
 		//=========================================================================//
 
 		void Shutdown();

@@ -1,5 +1,6 @@
 [requires]
 sfml/2.5.1
+nlohmann_json/3.12.0
 gtest/1.14.0
 
 [generators]
