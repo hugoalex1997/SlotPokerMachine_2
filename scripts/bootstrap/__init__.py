@@ -15,7 +15,7 @@ def _install_conan():
         "pipx",
         "build-essential",
         "pkg-config",
-        "libudev-dev"
+        "libudev-dev",
         "libgl-dev",
         "libx11-dev",
         "libx11-xcb-dev",
@@ -52,7 +52,7 @@ def _install_conan():
         "libxcb-xfixes0-dev",
         "libxcb-xinerama0-dev",
         "libxcb-dri3-dev",
-        "uuid-dev"
+        "uuid-dev",
         "libxcb-cursor-dev",
         "libxcb-dri2-0-dev",
         "libxcb-dri3-dev",
