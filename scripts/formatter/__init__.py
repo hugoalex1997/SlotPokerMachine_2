@@ -3,21 +3,21 @@ import glob
 import scripts.utils as utils
 
 # TODO(hg): improve file search
-main = ["/backend/main.cpp"]
+main = ["backend/main.cpp"]
 cpp_files = glob.glob("backend/**/*.cpp", recursive=True)
 hpp_files = glob.glob("backend/**/*.hpp", recursive=True)
 h_files = glob.glob("backend/**/*.h", recursive=True)
 
 backend_files = main + cpp_files + hpp_files + h_files
 
-main = ["/frontend/main.cpp"]
+main = ["frontend/main.cpp"]
 cpp_files = glob.glob("frontend/**/*.cpp", recursive=True)
 hpp_files = glob.glob("frontend/**/*.hpp", recursive=True)
 h_files = glob.glob("frontend/**/*.h", recursive=True)
 
 frontend_files = main + cpp_files + hpp_files + h_files
 
-main = ["/test/main.cpp"]
+main = ["test/main.cpp"]
 cpp_files = glob.glob("test/**/*.cpp", recursive=True)
 hpp_files = glob.glob("test/**/*.hpp", recursive=True)
 h_files = glob.glob("test/**/*.h", recursive=True)
