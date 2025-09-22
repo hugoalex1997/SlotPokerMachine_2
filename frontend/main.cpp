@@ -43,6 +43,6 @@ int main() {
 	return 0;
 }
 
-//TODO(hg):
-// - Add layer level to scene.
-// - Add a proper logger.
+// TODO(hg):
+//  - Add layer level to scene.
+//  - Add a proper logger.
