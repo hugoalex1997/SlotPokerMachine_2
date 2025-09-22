@@ -8,7 +8,7 @@
 #include <memory>
 #include "assetsmanager.hpp"
 #include "defines.hpp"
-#include "scene.hpp"
+#include "scene/scene.hpp"
 
 namespace frontend {
 

@@ -12,11 +12,11 @@ namespace sdk::fs {
 		return GetRootFolder() / "frontend" / "assets";
 	}
 
-	inline std::filesystem::path GetAssetsJsonFile() {  //
+	inline std::filesystem::path GetAssetsJsonFile() {	//
 		return GetAssetsFolder() / "assets.json";
 	}
 
 	inline std::filesystem::path GetSceneJsonFile() {  //
-		return GetAssetsFolder() / "scene.json";
+		return GetRootFolder() / "frontend" / "src" / "scene" / "scene.json";
 	}
 }  // namespace sdk::fs

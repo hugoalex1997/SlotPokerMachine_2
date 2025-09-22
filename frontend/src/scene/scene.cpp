@@ -1,9 +1,10 @@
 #include "scene.hpp"
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
-#include "assetsmanager.hpp"
 #include "sdk/filesystem.hpp"
 #include "sdk/json.hpp"
+#include "src/assetsmanager.hpp"
 #include "src/view.hpp"
 
 namespace frontend {
@@ -120,25 +121,13 @@ namespace frontend {
 		if (json.contains("y")) {
 			props.y = json["y"].get<uint64_t>();
 		}
-		if (json.contains("width")) {
-			props.width = json["width"].get<uint64_t>();
-		}
-		if (json.contains("height")) {
-			props.height = json["height"].get<uint64_t>();
-		}
 
 		if (json.contains("texture")) {
 			const auto texture = json["texture"].get<std::string>();
 			props.texture = mAssetsManager->GetTexture(texture);
 		}
 
-		Shape shape{Shape::None};
-		if (json.contains("shape")) {
-			shape = GetShapeFromString(json["shape"].get<std::string>());
-		}
-
-		const auto drawable = createDrawable(props, shape);
-
+		const auto drawable = createSprite(props);
 		if (!drawable) {
 			std::cout << "Failed to create drawable for entity: " << props.name << std::endl;
 			return std::nullopt;
@@ -151,26 +140,12 @@ namespace frontend {
 		return Entity{drawable, visible};
 	}
 
-	sf::Drawable* Scene::createDrawable(const DrawableProps& props, Shape shape) {
-		sf::Drawable* drawable{nullptr};
-		switch (shape) {
-			case Shape::Rectangle: {
-				drawable = new sf::RectangleShape(createRectangle(props));
-				mEntities[props.name] = drawable;
-			} break;
-
-			default:
-				std::cout << "Unknown shape type!" << std::endl;
-		}
-		return drawable;
-	}
-
-	sf::RectangleShape Scene::createRectangle(const DrawableProps& props) {
-		sf::RectangleShape rectangle;
-		rectangle.setTexture(props.texture);
-		rectangle.setSize(sf::Vector2f(props.width, props.height));
-		rectangle.setPosition(props.x, props.y);
-		return rectangle;
+	sf::Sprite* Scene::createSprite(const DrawableProps& props) {
+		const auto sprite = new sf::Sprite();
+		sprite->setTexture(*props.texture);
+		sprite->setPosition(props.x, props.y);
+		mEntities[props.name] = sprite;
+		return sprite;
 	}
 
 	Container Scene::createContainer(const nlohmann::json& json) {

@@ -35,8 +35,6 @@ namespace frontend {
 	struct DrawableProps {
 		std::string name{};
 		sf::Texture* texture{};
-		uint64_t height{};
-		uint64_t width{};
 		uint64_t x{};
 		uint64_t y{};
 	};
@@ -137,9 +135,7 @@ namespace frontend {
 
 		Container createContainer(const nlohmann::json& json);
 
-		sf::Drawable* createDrawable(const DrawableProps& props, Shape shape);
-
-		sf::RectangleShape createRectangle(const DrawableProps& props);
+		sf::Sprite* createSprite(const DrawableProps& props);
 
 	private:
 		AssetsManager* mAssetsManager{nullptr};
