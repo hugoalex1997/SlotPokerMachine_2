@@ -7,8 +7,8 @@
 #include <iostream>
 #include <memory>
 #include "assetsmanager.hpp"
-#include "scene.hpp"
 #include "defines.hpp"
+#include "scene.hpp"
 
 namespace frontend {
 
