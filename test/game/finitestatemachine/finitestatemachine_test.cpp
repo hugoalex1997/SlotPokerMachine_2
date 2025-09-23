@@ -1,7 +1,7 @@
+#include "fsm/finitestatemachine.h"
+
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
-#include "fsm/finitestatemachine.h"
 
 struct MockFiniteStateMachine : public FiniteStateMachineImplementation {
 	MockFiniteStateMachine() {};

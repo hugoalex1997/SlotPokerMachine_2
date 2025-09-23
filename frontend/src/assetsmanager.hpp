@@ -1,10 +1,12 @@
 #include <sys/types.h>
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <map>
 #include <nlohmann/json.hpp>
+
+#include <map>
 #include <optional>
 #include <string>
 

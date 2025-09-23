@@ -1,13 +1,18 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
+
 #include <filesystem>
 #include <fstream>
-#include <nlohmann/json.hpp>
+
 #include "logger.hpp"
 
 using JSON = nlohmann::json;
 #define SerializeAsJson(...) NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(__VA_ARGS__)
 #define SerializeAsJsonWithDefault(...) NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(__VA_ARGS__)
+#define SerializeAsJsonEmpty(type)                                                                                    \
+	inline void to_json(nlohmann::json& nlohmann_json_j, const type&) { nlohmann_json_j = nlohmann::json::object(); } \
+	inline void from_json(const nlohmann::json&, type&) {}
 
 namespace sdk::json {
 

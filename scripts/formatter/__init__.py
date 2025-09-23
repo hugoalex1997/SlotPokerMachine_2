@@ -2,28 +2,21 @@ import glob
 
 import scripts.utils as utils
 
-# TODO(hg): improve file search
-cpp_files = glob.glob("backend/**/*.cpp", recursive=True)
-hpp_files = glob.glob("backend/**/*.hpp", recursive=True)
-h_files = glob.glob("backend/**/*.h", recursive=True)
 
-backend_files = cpp_files + hpp_files + h_files
+def get_folder_files(folder: str, filter: list[str] = None) -> list[str]:
+    files = []
+    for extension in filter:
+        files.extend(glob.glob(f"{folder}/**/*{extension}", recursive=True))
 
-main = ["frontend/main.cpp"]
-cpp_files = glob.glob("frontend/**/*.cpp", recursive=True)
-hpp_files = glob.glob("frontend/**/*.hpp", recursive=True)
-h_files = glob.glob("frontend/**/*.h", recursive=True)
+    return files
 
-frontend_files = main + cpp_files + hpp_files + h_files
 
-main = ["test/main.cpp"]
-cpp_files = glob.glob("test/**/*.cpp", recursive=True)
-hpp_files = glob.glob("test/**/*.hpp", recursive=True)
-h_files = glob.glob("test/**/*.h", recursive=True)
+all_files = []
 
-test_files = main + cpp_files + hpp_files + h_files
-
-all_files = backend_files + frontend_files + test_files
+all_files += get_folder_files("backend", filter=[".cpp", ".hpp", ".h"])
+all_files += get_folder_files("frontend", filter=[".cpp", ".hpp", ".h"])
+all_files += get_folder_files("sdk", filter=[".cpp", ".hpp", ".h"])
+all_files += get_folder_files("test", filter=[".cpp", ".hpp", ".h"])
 
 
 def run_clang_format():

@@ -1,8 +1,9 @@
 #include "api.hpp"
+
 #include <iostream>
-#include "game.hpp"
 
 #include "aliases.hpp"
+#include "game.hpp"
 
 namespace backend {
 
@@ -47,12 +48,12 @@ namespace backend {
 	}
 
 	bool API::UpdateBetLevel(const uint8_t level) {
-		LogInfo("Updating bet level to {}", static_cast<int>(level));
+		LogInfo("Updating bet level to {}", level);
 		return mGame->UpdateBetLevel(level);
 	}
 
 	bool API::UpdateLines(const uint8_t lines) {
-		LogInfo("Updating lines to {}", static_cast<int>(lines));
+		LogInfo("Updating lines to {}", lines);
 		return mGame->UpdateLines(lines);
 	}
 

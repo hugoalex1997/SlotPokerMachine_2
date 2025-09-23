@@ -1,5 +1,7 @@
 #include "game.hpp"
+
 #include <iostream>
+
 #include "aliases.hpp"
 
 namespace backend {

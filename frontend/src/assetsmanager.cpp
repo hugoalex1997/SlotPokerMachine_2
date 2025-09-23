@@ -1,8 +1,11 @@
 #include "assetsmanager.hpp"
+
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Texture.hpp>
+
 #include <filesystem>
 #include <iostream>
+
 #include "aliases.hpp"
 #include "sdk/filesystem.hpp"
 #include "sdk/json.hpp"

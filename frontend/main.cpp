@@ -1,11 +1,12 @@
 
 #include <SFML/Graphics.hpp>
+
 #include <iostream>
-#include "backend/api.hpp"
-#include "src/view.hpp"
 
 #include "aliases.h"
+#include "backend/api.hpp"
 #include "sdk/sleep.hpp"
+#include "src/view.hpp"
 
 int main() {
 	backend::API api;

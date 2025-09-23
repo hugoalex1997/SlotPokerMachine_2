@@ -1,11 +1,12 @@
 
 #include "logger.hpp"
-#include "filesystem.hpp"
 
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/dup_filter_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+
+#include "filesystem.hpp"
 
 namespace sdk {
 

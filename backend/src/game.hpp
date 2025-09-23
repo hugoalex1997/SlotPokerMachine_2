@@ -2,18 +2,19 @@
 
 #include <chrono>
 #include <memory>
-#include <vector>
 
 #include "accounting.hpp"
+#include "sdk/enums.hpp"
 
 namespace backend {
 
 	class Accounting;
 
-	enum class GameState {
+	enum class GameState : uint8_t {
 		None,
 		Idle,
 		Playing,
+		__count__,
 	};
 
 	class Game {
@@ -58,3 +59,18 @@ namespace backend {
 		uint8_t mLines{1};
 	};
 }  // namespace backend
+
+//================================ ENUMS AS JSON =============================//
+
+// clang-format off
+EnumBegin(backend::GameState)
+	EnumCustomEntry(None, "none")
+	EnumCustomEntry(Idle, "idle")
+	EnumCustomEntry(Playing, "playing")
+	EnumCustomEntry(__count__, "__count__")
+EnumEnd()
+
+EnumAsJson(backend, GameState)
+	// clang-format on
+
+	//============================================================================//

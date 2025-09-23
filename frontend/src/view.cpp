@@ -1,14 +1,15 @@
 #include "view.hpp"
 
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Window/Event.hpp>
+
 #include <memory>
+
 #include "aliases.hpp"
 #include "assetsmanager.hpp"
 #include "defines.hpp"
 #include "scene/scene.hpp"
+#include "src/data_structures/sfml.hpp"
 
 namespace frontend {
 
@@ -89,10 +90,10 @@ namespace frontend {
 	}
 
 	void GameView::keyboardButtonPressed(const sf::Event::KeyEvent& keyboard) {
-		LogInfo("Key Pressed: {}", static_cast<int>(keyboard.code));
+		LogInfo("Key Pressed: {}", sdk::enums::ToString(keyboard.code));
 	}
 
 	void GameView::mouseButtonPressed(const sf::Event::MouseButtonEvent& mouse) {
-		LogInfo("Mouse Button Pressed: {}", static_cast<int>(mouse.button));
+		LogInfo("Mouse Button Pressed: {}", sdk::enums::ToString(mouse.button));
 	}
 }  // namespace frontend

@@ -1,67 +1,36 @@
+
+
 #include "scene.hpp"
+
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
+
+#include "objects.hpp"
+#include "sdk/enums.hpp"
 #include "sdk/filesystem.hpp"
 #include "sdk/json.hpp"
+#include "src/aliases.hpp"
 #include "src/assetsmanager.hpp"
 #include "src/view.hpp"
 
-#include "src/aliases.hpp"
-
 namespace frontend {
 
-	//================================ Entity =============================//
-
-	Entity::Entity(std::shared_ptr<sf::Drawable> drawable) : mDrawable(drawable) {};
-
-	Entity::Entity(std::shared_ptr<sf::Drawable> drawable, bool visible) : mDrawable(drawable), mVisible(visible) {}
-
-	void Entity::Draw(sf::RenderWindow& window) const {
-		if (!mVisible) {
-			return;
-		}
-
-		window.draw(*mDrawable);
-	}
-
-	//================================ Container =============================//
-
-	bool Container::AddObject(const std::string& name, const Entity& entity) {
-		if (mObjects.find(name) != mObjects.end()) {
-			LogError("Object with name {} already exists in container!", name);
-			return false;
-		}
-
-		mObjects[name] = std::make_shared<Entity>(entity);
-		return true;
-	}
-
-	bool Container::AddObject(const std::string& name, const Container& container) {
-		if (mObjects.find(name) != mObjects.end()) {
-			LogError("Object with name {} already exists in container!", name);
-			return false;
-		}
-
-		mObjects[name] = std::make_shared<Container>(container);
-		return true;
-	}
-
-	void Container::Draw(sf::RenderWindow& window) const {
-		if (!mVisible) {
-			return;
-		}
-
-		for (const auto& [_, object] : mObjects) {
-			if (!object->GetVisibility()) {
-				continue;
+	namespace {
+		ObjectType GetObjectTypeFromString(const std::string& type) {
+			if (type == "entity") {
+				return ObjectType::Entity;
+			} else if (type == "container") {
+				return ObjectType::Container;
 			}
 
-			object->Draw(window);
+			return ObjectType::None;
 		}
-	}
 
-	//================================ Scene =============================//
+		template <class PropsT>
+		[[nodiscard]] inline auto* GetPropsAs(const std::shared_ptr<IProps> props) {
+			return dynamic_cast<PropsT*>(props.get());
+		}
+	}  // namespace
 
 	Scene::Scene(std::string name) : mName(std::move(name)) {};
 
@@ -80,38 +49,40 @@ namespace frontend {
 		const auto sceneJson = *scene;
 
 		for (const auto& object : sceneJson["objects"]) {
-			const auto type_ = object["type"].get<std::string>();
-			const auto type = GetObjectTypeFromString(type_);
+			const auto type = object["type"].get<ObjectType>();
 
 			switch (type) {
 				case ObjectType::Entity: {
-					const auto name = object["name"].get<std::string>();
-					const auto entity = createEntity(object);
+					const auto props = object.get<EntityProps>();
+					const auto entity = createEntity(props);
 
 					if (!entity) {
-						LogError("Failed to create entity {}", name);
+						LogError("Failed to create entity {}", props.name);
 						continue;
 					}
 
-					if (!AddObject(name, *entity)) {
-						LogError("Failed to add entity {} to scene!", name);
+					if (!AddObject(props.name, *entity)) {
+						LogError("Failed to add entity {} to scene!", props.name);
+						continue;
 					}
 
-					LogInfo("Entity {} added to scene!", name);
+					LogInfo("Entity {} added to scene!", props.name);
 				} break;
 
 				case ObjectType::Container: {
-					const auto name = object["name"].get<std::string>();
-					const auto container = createContainer(object);
-					if (!AddObject(name, container)) {
-						LogError("Failed to add container {} to scene!", name);
+					const auto props = object.get<ContainerProps>();
+					const auto container = createContainer(props);
+
+					if (!AddObject(props.name, container)) {
+						LogError("Failed to add container {} to scene!", props.name);
+						continue;
 					}
 
-					LogInfo("Container {} added to scene!", name);
+					LogInfo("Container {} added to scene!", props.name);
 				} break;
 
 				default: {
-					LogError("Unknown object type: {}", type_);
+					LogError("Unknown object type: {}", sdk::enums::ToString(type));
 					continue;
 				}
 			}
@@ -120,78 +91,66 @@ namespace frontend {
 		return true;
 	}
 
-	std::optional<Entity> Scene::createEntity(const DrawableProps& props) {
-		const auto drawable = createSprite(props);
-		if (!drawable) {
-			LogError("Failed to create drawable for entity: {}", props.name);
-			return std::nullopt;
-		}
-
-		return Entity{drawable, props.visible};
-	}
-
-	std::shared_ptr<sf::Sprite> Scene::createSprite(const DrawableProps& props) {
+	std::optional<Entity> Scene::createEntity(const EntityProps& props) {
 		auto sprite = std::make_shared<sf::Sprite>();
 
 		const auto* texture = mAssetsManager->GetTexture(props.texture_name);
 
 		if (!texture) {
 			LogError("Failed to get texture for sprite: {}", props.name);
-			return nullptr;
+			return std::nullopt;
 		}
 
 		sprite->setTexture(*texture);
 		sprite->setPosition(props.x, props.y);
-		return sprite;
+
+		return Entity{sprite, props.visible};
 	}
 
-	Container Scene::createContainer(const nlohmann::json& json) {
+	Container Scene::createContainer(const ContainerProps& props) {
 		Container container{};
 
-		if (!json.contains("objects")) {
+		if (props.objects.empty()) {
 			LogWarn("Container is empty!");
 			return container;
 		}
 
-		for (const auto& object : json["objects"]) {
-			const auto type_ = object["type"].get<std::string>();
-			const auto type = GetObjectTypeFromString(type_);
+		for (const auto& object : props.objects) {
+			const auto type = object->GetType();
 
 			switch (type) {
 				case ObjectType::Entity: {
-					const auto name = object["name"].get<std::string>();
-					const auto entity = createEntity(object);
+					const auto props = GetPropsAs<EntityProps>(object);
+					const auto entity = createEntity(*props);
 
 					if (!entity) {
-						LogError("Failed to create entity {}", name);
+						LogError("Failed to create entity {}", props->name);
 						continue;
 					}
 
-					if (!container.AddObject(name, *entity)) {
-						LogError("Failed to add entity {} to container!", name);
+					if (!container.AddObject(props->name, *entity)) {
+						LogError("Failed to add entity {} to container!", props->name);
 						continue;
 					}
 				} break;
 
 				case ObjectType::Container: {
-					const auto name = object["name"].get<std::string>();
-					const auto innerContainer = createContainer(object);
-					if (!container.AddObject(name, innerContainer)) {
-						LogError("Failed to add container {} to container!", name);
+					const auto props = GetPropsAs<ContainerProps>(object);
+					const auto innerContainer = createContainer(*props);
+
+					if (!container.AddObject(props->name, innerContainer)) {
+						LogError("Failed to add container {} to container!", props->name);
 					}
 				} break;
 
 				default: {
-					LogError("Unknown object type: {}", type_);
+					LogError("Unknown object type: {}", sdk::enums::ToString(type));
 					continue;
 				}
 			}
 		}
 
-		if (json.contains("visible")) {
-			const bool visible = json["visible"].get<bool>();
-			container.SetVisibility(visible);
-		}
+		container.SetVisibility(props.visible);
 		return container;
 	}
 

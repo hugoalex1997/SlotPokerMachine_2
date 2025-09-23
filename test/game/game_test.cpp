@@ -1,7 +1,7 @@
+#include "game.h"
+
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
-#include "game.h"
 
 struct GameMock : public Game {
 	MOCK_METHOD0(CreateGameView, GameView*());

@@ -1,7 +1,7 @@
+#include "accounting/accounting.h"
+
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
-#include "accounting/accounting.h"
 
 struct MockAccounting : public AccountingImplementation {
 	MockAccounting() {};
