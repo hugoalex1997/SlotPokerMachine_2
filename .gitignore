@@ -4,3 +4,4 @@ external/*
 build/*
 .cache/*
 __pycache__/
+logs/*

@@ -7,6 +7,8 @@
 #include "src/assetsmanager.hpp"
 #include "src/view.hpp"
 
+#include "src/aliases.hpp"
+
 namespace frontend {
 
 	//================================ Entity =============================//
@@ -27,7 +29,7 @@ namespace frontend {
 
 	bool Container::AddObject(const std::string& name, const Entity& entity) {
 		if (mObjects.find(name) != mObjects.end()) {
-			std::cout << "Object with name " << name << " already exists in container!" << std::endl;
+			LogError("Object with name {} already exists in container!", name);
 			return false;
 		}
 
@@ -37,7 +39,7 @@ namespace frontend {
 
 	bool Container::AddObject(const std::string& name, const Container& container) {
 		if (mObjects.find(name) != mObjects.end()) {
-			std::cout << "Object with name " << name << " already exists in container!" << std::endl;
+			LogError("Object with name {} already exists in container!", name);
 			return false;
 		}
 
@@ -71,7 +73,7 @@ namespace frontend {
 		const auto scene = sdk::json::FromFile(file);
 
 		if (!scene) {
-			std::cout << "Failed to load scene file: " << file << std::endl;
+			LogError("Failed to load scene file: {}", file.string());
 			return false;
 		}
 
@@ -87,41 +89,41 @@ namespace frontend {
 					const auto entity = createEntity(object);
 
 					if (!entity) {
-						std::cout << "Failed to create entity " << name << "!" << std::endl;
+						LogError("Failed to create entity {}", name);
 						continue;
 					}
 
 					if (!AddObject(name, *entity)) {
-						std::cout << "Failed to add entity " << name << " to scene!" << std::endl;
+						LogError("Failed to add entity {} to scene!", name);
 					}
 
-					std::cout << "Entity " << name << " added to scene!" << std::endl;
+					LogInfo("Entity {} added to scene!", name);
 				} break;
 
 				case ObjectType::Container: {
 					const auto name = object["name"].get<std::string>();
 					const auto container = createContainer(object);
 					if (!AddObject(name, container)) {
-						std::cout << "Failed to add container " << name << " to scene!" << std::endl;
+						LogError("Failed to add container {} to scene!", name);
 					}
 
-					std::cout << "Container " << name << " added to scene!" << std::endl;
+					LogInfo("Container {} added to scene!", name);
 				} break;
 
 				default: {
-					std::cout << "Unknown object type: " << type_ << std::endl;
+					LogError("Unknown object type: {}", type_);
 					continue;
 				}
 			}
 		}
-		std::cout << "Scene " << mName << " loaded successfully!" << std::endl;
+		LogInfo("Scene {} loaded successfully!", mName);
 		return true;
 	}
 
 	std::optional<Entity> Scene::createEntity(const DrawableProps& props) {
 		const auto drawable = createSprite(props);
 		if (!drawable) {
-			std::cout << "Failed to create drawable for entity: " << props.name << std::endl;
+			LogError("Failed to create drawable for entity: {}", props.name);
 			return std::nullopt;
 		}
 
@@ -134,7 +136,7 @@ namespace frontend {
 		const auto* texture = mAssetsManager->GetTexture(props.texture_name);
 
 		if (!texture) {
-			std::cout << "Failed to get texture for sprite: " << props.name << std::endl;
+			LogError("Failed to get texture for sprite: {}", props.name);
 			return nullptr;
 		}
 
@@ -147,7 +149,7 @@ namespace frontend {
 		Container container{};
 
 		if (!json.contains("objects")) {
-			std::cout << "Container is empty!" << std::endl;
+			LogWarn("Container is empty!");
 			return container;
 		}
 
@@ -161,12 +163,12 @@ namespace frontend {
 					const auto entity = createEntity(object);
 
 					if (!entity) {
-						std::cout << "Failed to create entity " << name << "!" << std::endl;
+						LogError("Failed to create entity {}", name);
 						continue;
 					}
 
 					if (!container.AddObject(name, *entity)) {
-						std::cout << "Failed to add entity " << name << " to container!" << std::endl;
+						LogError("Failed to add entity {} to container!", name);
 						continue;
 					}
 				} break;
@@ -175,12 +177,12 @@ namespace frontend {
 					const auto name = object["name"].get<std::string>();
 					const auto innerContainer = createContainer(object);
 					if (!container.AddObject(name, innerContainer)) {
-						std::cout << "Failed to add container " << name << " to container!" << std::endl;
+						LogError("Failed to add container {} to container!", name);
 					}
 				} break;
 
 				default: {
-					std::cout << "Unknown object type: " << type_ << std::endl;
+					LogError("Unknown object type: {}", type_);
 					continue;
 				}
 			}
@@ -195,7 +197,7 @@ namespace frontend {
 
 	bool Scene::AddObject(const std::string& name, const Entity& entity) {
 		if (mObjects.find(name) != mObjects.end()) {
-			std::cout << "Object with name " << name << " already exists in scene " << mName << "!" << std::endl;
+			LogError("Object with name {} already exists in scene {}!", name, mName);
 			return false;
 		}
 
@@ -205,7 +207,7 @@ namespace frontend {
 
 	bool Scene::AddObject(const std::string& name, const Container& container) {
 		if (mObjects.find(name) != mObjects.end()) {
-			std::cout << "Object with name " << name << " already exists in scene " << mName << "!" << std::endl;
+			LogError("Object with name {} already exists in scene {}!", name, mName);
 			return false;
 		}
 

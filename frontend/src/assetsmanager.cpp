@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <filesystem>
 #include <iostream>
+#include "aliases.hpp"
 #include "sdk/filesystem.hpp"
 #include "sdk/json.hpp"
 
@@ -12,7 +13,7 @@ namespace frontend {
 		sf::Texture texture;
 
 		if (!texture.loadFromFile(path)) {
-			std::cout << "Failed to load texture: " << path << std::endl;
+			LogError("Failed to load texture: {}", path.string());
 			return std::nullopt;
 		}
 		return texture;
@@ -23,7 +24,7 @@ namespace frontend {
 
 		const auto assets = sdk::json::FromFile(file);
 		if (!assets) {
-			std::cout << "Failed to load assets file: " << file << std::endl;
+			LogError("Failed to load assets file: {}", file.string());
 			return false;
 		}
 
@@ -38,13 +39,13 @@ namespace frontend {
 			auto texture = loadTexture(name, assetsPath / path);
 
 			if (!texture) {
-				std::cout << "Failed to load texture: " << path << std::endl;
+				LogError("Failed to load texture: {}", path);
 				return false;
 			}
 			mTextures[name] = std::move(*texture);
 		}
 
-		std::cout << "All assets loaded successfully!" << std::endl;
+		LogInfo("All assets loaded successfully!");
 		return true;
 	}
 
@@ -53,7 +54,7 @@ namespace frontend {
 		if (it != mTextures.end()) {
 			return &it->second;
 		}
-		std::cout << "Texture " << name << " not found!" << std::endl;
+		LogError("Texture {} not found!", name);
 		return nullptr;	 // not found
 	}
 

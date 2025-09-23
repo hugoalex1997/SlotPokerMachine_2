@@ -8,6 +8,14 @@ namespace sdk::fs {
 		return buildFolder.parent_path();
 	}
 
+	inline std::filesystem::path GetLogsPath() {  //
+		return GetRootFolder() / "logs";
+	}
+
+	inline std::filesystem::path GetMainLogPath() {	 //
+		return GetRootFolder() / "logs" / "main.log";
+	}
+
 	inline std::filesystem::path GetAssetsFolder() {  //
 		return GetRootFolder() / "frontend" / "assets";
 	}

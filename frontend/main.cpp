@@ -1,19 +1,17 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <sdk/sleep.hpp>
-#include "../backend/api.hpp"
+#include "backend/api.hpp"
 #include "src/view.hpp"
 
-#include <nlohmann/json.hpp>
+#include "aliases.h"
+#include "sdk/sleep.hpp"
 
 int main() {
-	std::cout << "Initializing Frontend" << std::endl;
-
 	backend::API api;
 	frontend::GameView view{};
 	if (!view.Initialize()) {
-		std::cout << "Failed to initialize frontend!" << std::endl;
+		std::cerr << "Failed to initialize frontend!" << std::endl;
 		return -1;
 	}
 

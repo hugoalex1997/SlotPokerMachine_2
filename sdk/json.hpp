@@ -2,8 +2,8 @@
 
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <nlohmann/json.hpp>
+#include "logger.hpp"
 
 using JSON = nlohmann::json;
 #define SerializeAsJson(...) NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(__VA_ARGS__)
@@ -11,25 +11,7 @@ using JSON = nlohmann::json;
 
 namespace sdk::json {
 
-	template <class ObjT>
-	inline std::string Stringify(ObjT&& object, bool pretty = true) {
-		const JSON obj(std::forward<ObjT>(object));
-		return obj.dump(pretty ? 2 : -1);  // JSON string
-	}
-
-	inline std::optional<JSON> FromFile(const std::filesystem::path& filepath) {
-		JSON json;
-		{
-			std::ifstream file(filepath);
-			if (!file.is_open()) {
-				std::cout << "Failed to open " << filepath << " as json" << std::endl;
-				return std::nullopt;
-			}
-			file >> json;
-		}
-
-		return json;
-	}
+	std::optional<JSON> FromFile(const std::filesystem::path& filepath);
 
 	template <class ObjT>
 	inline std::optional<ObjT> FromFileTo(const std::string_view path) {
@@ -39,8 +21,14 @@ namespace sdk::json {
 			auto parsed = JSON::parse(file);
 			return parsed.get<ObjT>();
 		} catch (const std::exception& e) {
-			std::cout << "Failed to parse JSON file: " << e.what() << std::endl;
+			MainLogError("Failed to parse JSON file: {}", e.what());
 		}
 		return std::nullopt;
+	}
+
+	template <class ObjT>
+	inline std::string Stringify(ObjT&& object, bool pretty = true) {
+		const JSON obj(std::forward<ObjT>(object));
+		return obj.dump(pretty ? 2 : -1);  // JSON string
 	}
 }  // namespace sdk::json

@@ -4,8 +4,8 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Window/Event.hpp>
-#include <iostream>
 #include <memory>
+#include "aliases.hpp"
 #include "assetsmanager.hpp"
 #include "defines.hpp"
 #include "scene/scene.hpp"
@@ -21,15 +21,16 @@ namespace frontend {
 	GameView::~GameView() = default;
 
 	bool GameView::Initialize() {  //
+
 		if (!mAssetsmgr->LoadAssets()) {
-			std::cout << "Failed to load assets!" << std::endl;
+			LogError("Failed to load assets!");
 			return false;
 		}
 
 		mScene->AttachAssetsManager(mAssetsmgr.get());
 
 		if (!mScene->LoadScene()) {
-			std::cout << "Failed to load scene!" << std::endl;
+			LogError("Failed to load scene!");
 			return false;
 		}
 
@@ -81,17 +82,17 @@ namespace frontend {
 	}
 
 	void GameView::resize(const unsigned int width, const unsigned int height) {
-		std::cout << "Window Resized: y - " << width << "x - " << height << std::endl;
+		LogInfo("Window Resized: y -{} x - {}", height, width);
 
 		sf::FloatRect visibleArea(0, 0, static_cast<float>(width), static_cast<float>(height));
 		mWindow->setView(sf::View(visibleArea));
 	}
 
 	void GameView::keyboardButtonPressed(const sf::Event::KeyEvent& keyboard) {
-		std::cout << "Key Pressed: " << keyboard.code << std::endl;
+		LogInfo("Key Pressed: {}", static_cast<int>(keyboard.code));
 	}
 
 	void GameView::mouseButtonPressed(const sf::Event::MouseButtonEvent& mouse) {
-		std::cout << "Mouse Button Pressed: " << mouse.button << std::endl;
+		LogInfo("Mouse Button Pressed: {}", static_cast<int>(mouse.button));
 	}
 }  // namespace frontend

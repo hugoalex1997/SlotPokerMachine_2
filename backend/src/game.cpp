@@ -1,11 +1,10 @@
 #include "game.hpp"
 #include <iostream>
+#include "aliases.hpp"
 
 namespace backend {
 
 	bool Game::Initialize() {
-		std::cout << "Starting backend loading" << std::endl;
-
 		mAccounting = std::make_unique<Accounting>();
 		mState = GameState::Idle;
 
@@ -15,13 +14,13 @@ namespace backend {
 
 	bool Game::StartPlay() {
 		if (mState != GameState::Idle) {
-			std::cout << "Cannot start play, game not in idle state." << std::endl;
+			LogError("Cannot start play because game is not in idle state.");
 			return false;
 		}
 
 		const auto bet = GetCurrentBet();
 		if (!mAccounting->StartPlay(bet)) {
-			std::cout << "Cannot start play, insufficient credits." << std::endl;
+			LogError("Cannot start play, insufficient credits.");
 			return false;
 		}
 
@@ -42,7 +41,7 @@ namespace backend {
 
 	bool Game::UpdateBetLevel(const uint8_t level) {
 		if (level > kMaxBetLevel) {
-			std::cout << "Bet value exceeds maximum allowed bet." << std::endl;
+			LogError("Bet value exceeds maximum allowed bet.");
 			return false;
 		}
 
@@ -52,7 +51,7 @@ namespace backend {
 
 	bool Game::UpdateLines(const uint8_t lines) {
 		if (lines > kMaxLines) {
-			std::cout << "Lines value exceeds maximum allowed lines." << std::endl;
+			LogError("Lines value exceeds maximum allowed lines.");
 			return false;
 		}
 

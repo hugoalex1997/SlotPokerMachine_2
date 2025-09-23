@@ -8,5 +8,6 @@ set(CMAKE_BUILD_TYPE Debug)
 
 
 # Add subprojects
+add_subdirectory(sdk)
 add_subdirectory(backend)
 add_subdirectory(frontend)

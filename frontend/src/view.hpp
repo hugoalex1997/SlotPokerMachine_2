@@ -5,7 +5,6 @@
 #include <SFML/Window.hpp>
 #include <chrono>
 #include <memory>
-#include <variant>
 
 namespace frontend {
 

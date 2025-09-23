@@ -2,6 +2,8 @@
 #include <iostream>
 #include "game.hpp"
 
+#include "aliases.hpp"
+
 namespace backend {
 
 	//================================ Getters ================================//
@@ -20,35 +22,37 @@ namespace backend {
 
 	API::~API() = default;
 
-	void API::Shutdown() { std::cout << "Destroying backend!!" << std::endl; }
+	void API::Shutdown() {	//
+		LogInfo("Destroying backend!!");
+	}
 
 	bool API::Initialize() {
-		std::cout << "Initializing backend!!" << std::endl;
+		LogInfo("Initializing backend!!");
 		return mGame->Initialize();
 	}
 
 	bool API::AddMoney(const uint64_t amount) {
-		std::cout << "Adding money: " << amount << std::endl;
+		LogInfo("Adding money: {}", amount);
 		return mGame->AddMoney(amount);
 	}
 
 	bool API::StartPlay() {
-		std::cout << "Starting play!!" << std::endl;
+		LogInfo("Starting play!!");
 		return mGame->StartPlay();
 	}
 
 	void API::EndPlay() {
-		std::cout << "Ending play!!" << std::endl;
+		LogInfo("Ending play!!");
 		return mGame->EndPlay();
 	}
 
 	bool API::UpdateBetLevel(const uint8_t level) {
-		std::cout << "Updating bet level to " << static_cast<int>(level) << std::endl;
+		LogInfo("Updating bet level to {}", static_cast<int>(level));
 		return mGame->UpdateBetLevel(level);
 	}
 
 	bool API::UpdateLines(const uint8_t lines) {
-		std::cout << "Updating lines to " << static_cast<int>(lines) << std::endl;
+		LogInfo("Updating lines to {}", static_cast<int>(lines));
 		return mGame->UpdateLines(lines);
 	}
 
