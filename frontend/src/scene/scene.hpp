@@ -7,37 +7,20 @@
 #include <nlohmann/json_fwd.hpp>
 #include <optional>
 #include <string>
-#include <vector>
+#include "sdk/json.hpp"
 #include "src/view.hpp"
 
 namespace frontend {
 
-	enum class Shape : uint8_t {
-		None,
-		Rectangle,
-		Circle,
-		Sprite,
-		__count__,
-	};
-
-	inline Shape GetShapeFromString(const std::string& shape) {
-		if (shape == "rectangle") {
-			return Shape::Rectangle;
-		} else if (shape == "circle") {
-			return Shape::Circle;
-		} else if (shape == "sprite") {
-			return Shape::Sprite;
-		}
-
-		return Shape::None;
-	}
-
 	struct DrawableProps {
 		std::string name{};
-		sf::Texture* texture{};
+		std::string texture_name{};
 		uint64_t x{};
 		uint64_t y{};
+		bool visible{};
 	};
+
+	SerializeAsJson(DrawableProps, name, texture_name, x, y, visible);
 
 	enum class ObjectType : uint8_t {
 		None,
@@ -66,9 +49,9 @@ namespace frontend {
 
 	class Entity : public Object {
 	public:
-		explicit Entity(sf::Drawable* drawable);
+		explicit Entity(std::shared_ptr<sf::Drawable> drawable);
 
-		Entity(sf::Drawable* drawable, bool visible);
+		Entity(std::shared_ptr<sf::Drawable> drawable, bool visible);
 
 		[[nodiscard]] ObjectType GetType() override { return ObjectType::Entity; }
 
@@ -78,7 +61,7 @@ namespace frontend {
 
 	private:
 		bool mVisible{};
-		sf::Drawable* mDrawable;
+		std::shared_ptr<sf::Drawable> mDrawable;
 	};
 
 	class Container : public Object {
@@ -131,11 +114,11 @@ namespace frontend {
 		void Deactivate() { mVisible = false; }
 
 	private:
-		std::optional<Entity> createEntity(const nlohmann::json& json);
+		std::optional<Entity> createEntity(const DrawableProps& props);
 
 		Container createContainer(const nlohmann::json& json);
 
-		sf::Sprite* createSprite(const DrawableProps& props);
+		std::shared_ptr<sf::Sprite> createSprite(const DrawableProps& props);
 
 	private:
 		AssetsManager* mAssetsManager{nullptr};
@@ -143,6 +126,6 @@ namespace frontend {
 		std::string mName{};
 		bool mVisible{};
 		std::map<std::string, std::shared_ptr<Object>> mObjects;
-		std::map<std::string, sf::Drawable*> mEntities{};
 	};
+
 };	// namespace frontend

@@ -11,9 +11,9 @@ namespace frontend {
 
 	//================================ Entity =============================//
 
-	Entity::Entity(sf::Drawable* drawable) : mDrawable(drawable) {};
+	Entity::Entity(std::shared_ptr<sf::Drawable> drawable) : mDrawable(drawable) {};
 
-	Entity::Entity(sf::Drawable* drawable, bool visible) : mDrawable(drawable), mVisible(visible) {}
+	Entity::Entity(std::shared_ptr<sf::Drawable> drawable, bool visible) : mDrawable(drawable), mVisible(visible) {}
 
 	void Entity::Draw(sf::RenderWindow& window) const {
 		if (!mVisible) {
@@ -68,9 +68,16 @@ namespace frontend {
 	bool Scene::LoadScene() {
 		const auto file = sdk::fs::GetSceneJsonFile();
 
-		const auto scene = sdk::json::ToJson(file);
+		const auto scene = sdk::json::FromFile(file);
 
-		for (const auto& object : scene["objects"]) {
+		if (!scene) {
+			std::cout << "Failed to load scene file: " << file << std::endl;
+			return false;
+		}
+
+		const auto sceneJson = *scene;
+
+		for (const auto& object : sceneJson["objects"]) {
 			const auto type_ = object["type"].get<std::string>();
 			const auto type = GetObjectTypeFromString(type_);
 
@@ -111,40 +118,28 @@ namespace frontend {
 		return true;
 	}
 
-	std::optional<Entity> Scene::createEntity(const nlohmann::json& json) {
-		DrawableProps props{};
-		props.name = json["name"].get<std::string>();
-
-		if (json.contains("x")) {
-			props.x = json["x"].get<uint64_t>();
-		}
-		if (json.contains("y")) {
-			props.y = json["y"].get<uint64_t>();
-		}
-
-		if (json.contains("texture")) {
-			const auto texture = json["texture"].get<std::string>();
-			props.texture = mAssetsManager->GetTexture(texture);
-		}
-
+	std::optional<Entity> Scene::createEntity(const DrawableProps& props) {
 		const auto drawable = createSprite(props);
 		if (!drawable) {
 			std::cout << "Failed to create drawable for entity: " << props.name << std::endl;
 			return std::nullopt;
 		}
 
-		bool visible{false};
-		if (json.contains("visibility")) {
-			visible = json["visibility"].get<bool>();
-		}
-		return Entity{drawable, visible};
+		return Entity{drawable, props.visible};
 	}
 
-	sf::Sprite* Scene::createSprite(const DrawableProps& props) {
-		const auto sprite = new sf::Sprite();
-		sprite->setTexture(*props.texture);
+	std::shared_ptr<sf::Sprite> Scene::createSprite(const DrawableProps& props) {
+		auto sprite = std::make_shared<sf::Sprite>();
+
+		const auto* texture = mAssetsManager->GetTexture(props.texture_name);
+
+		if (!texture) {
+			std::cout << "Failed to get texture for sprite: " << props.name << std::endl;
+			return nullptr;
+		}
+
+		sprite->setTexture(*texture);
 		sprite->setPosition(props.x, props.y);
-		mEntities[props.name] = sprite;
 		return sprite;
 	}
 
@@ -191,8 +186,8 @@ namespace frontend {
 			}
 		}
 
-		if (json.contains("visibility")) {
-			const bool visible = json["visibility"].get<bool>();
+		if (json.contains("visible")) {
+			const bool visible = json["visible"].get<bool>();
 			container.SetVisibility(visible);
 		}
 		return container;

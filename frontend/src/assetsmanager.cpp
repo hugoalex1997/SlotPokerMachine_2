@@ -21,11 +21,17 @@ namespace frontend {
 	bool AssetsManager::LoadAssets() {
 		const auto file = sdk::fs::GetAssetsJsonFile();
 
-		const auto assets = sdk::json::ToJson(file);
+		const auto assets = sdk::json::FromFile(file);
+		if (!assets) {
+			std::cout << "Failed to load assets file: " << file << std::endl;
+			return false;
+		}
+
+		const auto assetsJson = *assets;
 
 		const auto assetsPath = sdk::fs::GetAssetsFolder();
 
-		for (const auto& asset : assets["assets"]) {
+		for (const auto& asset : assetsJson["assets"]) {
 			const auto name = asset["name"].get<std::string>();
 			const auto path = asset["path"].get<std::string>();
 

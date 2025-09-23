@@ -3,52 +3,52 @@
   "objects": [
     {
       "name": "background",
-      "texture": "cape",
+      "texture_name": "cape",
       "x": 0,
       "y": 0,
       "type": "entity",
-      "visibility": true
+      "visible": true
     },
     {
       "name": "gameplay",
-      "visibility": true,
+      "visible": true,
       "type": "container"
     },
     {
       "name": "settings",
-      "visibility": true,
+      "visible": true,
       "objects": [
         {
           "name": "start",
-          "texture": "start_button",
+          "texture_name": "start_button",
           "x": 10,
           "y": 550,
           "type": "entity",
-          "visibility": true
+          "visible": true
         },
         {
           "name": "cashin",
-          "texture": "cashin_button",
+          "texture_name": "cashin_button",
           "x": 150,
           "y": 510,
           "type": "entity",
-          "visibility": true
+          "visible": true
         },
         {
           "name": "cashout",
-          "texture": "cashout_button",
+          "texture_name": "cashout_button",
           "x": 150,
           "y": 585,
           "type": "entity",
-          "visibility": true
+          "visible": true
         },
         {
           "name": "bet",
-          "texture": "bet_button",
+          "texture_name": "bet_button",
           "x": 280,
           "y": 530,
           "type": "entity",
-          "visibility": true
+          "visible": true
         }
       ],
       "type": "container"
