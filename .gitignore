@@ -1,7 +1,8 @@
-cmake-build-debug/*
-external/*
-.vscode/*
-build/*
 .cache/*
-__pycache__/
-logs/*
+.vscode/*
+/build/*
+/.cache/*
+scripts/__pycache__/*
+/logs/*
+/.variables.json
+/CMakeUserPresets.json

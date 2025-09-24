@@ -4,7 +4,7 @@
 namespace sdk::fs {
 
 	inline std::filesystem::path GetRootFolder() {
-		auto buildFolder = std::filesystem::read_symlink("/proc/self/exe").parent_path().parent_path();
+		auto buildFolder = std::filesystem::read_symlink("/proc/self/exe").parent_path().parent_path().parent_path();
 		return buildFolder.parent_path();
 	}
 

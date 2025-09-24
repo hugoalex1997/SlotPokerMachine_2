@@ -1,18 +1,21 @@
-import sys
+import _utils as utils
 
-import scripts.utils as utils
 
-dependencies_path = "external"
+
+def _install_package(package):
+    utils.run_command("sudo", "apt", "install", "-y", package)
 
 
 def _install_packages(packages):
     for package in packages:
-        utils.run_command("sudo", "apt", "install", "-y", package)
+        _install_package(package)
 
-def _install_conan():
+
+def _install_dependencies():
 
     system_dependencies = [
-        "pipx",
+        "cmake",
+        "pip",
         "build-essential",
         "pkg-config",
         "libudev-dev",
@@ -69,18 +72,10 @@ def _install_conan():
         "libxaw7-dev",
     ]
 
-    conan_dependencies = [
-        "cmake",
-        ]
-
     _install_packages(system_dependencies)
-    _install_packages(conan_dependencies)
-    utils.run_command("pipx", "ensurepath")
-    utils.run_command("pipx", "install", "conan")
+    utils.run_command("pip", "install", "conan")
 
-def install_dependencies():
-    _install_conan()
 
 if __name__ == "__main__":
 
-    install_dependencies()
+    _install_dependencies()

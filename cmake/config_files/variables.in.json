@@ -1,0 +1,3 @@
+{
+  "cmake_binary_dir": "@CMAKE_BINARY_DIR@"
+}
