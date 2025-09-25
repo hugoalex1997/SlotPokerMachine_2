@@ -1,8 +1,10 @@
 import argparse
 import glob
+import os
 import sys
 
 import _utils as utils
+from _wrappers import BlackFormatterWrapper, ClangFormatWrapper, CmakeFormatterWrapper
 
 
 def _parser():
@@ -11,7 +13,7 @@ def _parser():
     parser.add_argument(
         "--check",
         action="store_true",
-        help="Check if files are correctly formatted without changing them",
+        help="Check if files are correctly formatted",
     )
 
     return parser.parse_args()
@@ -25,27 +27,7 @@ def _get_folder_files(folder: str, filter: list[str] = None) -> list[str]:
     return files
 
 
-def run_clang_format(files: list[str]) -> None:
-    for file in files:
-        utils.run_command("clang-format", "-i", file)
-    print("project files are now formatted!")
-
-
-def run_clang_format_check(files: list[str]) -> bool:
-    for file in files:
-        result = utils.run_command("clang-format", "--dry-run", "--Werror", file)
-
-        if result == False:
-            print("PLEASE FORMAT THE PROJECT FILES!")
-            return result
-
-    print("project files are correctly formatted!")
-    return True
-
-
-if __name__ == "__main__":
-
-    args = _parser()
+def _format_cpp_files(args):
 
     files: list[str] = []
 
@@ -54,9 +36,64 @@ if __name__ == "__main__":
     files += _get_folder_files("sdk", filter=[".cpp", ".hpp", ".h"])
     files += _get_folder_files("test", filter=[".cpp", ".hpp", ".h"])
 
-    if args.check:
-        if not run_clang_format_check(files):
-            sys.exit(1)
-        sys.exit(0)
+    formatter = ClangFormatWrapper()
+    formatter.verify_version()
 
-    run_clang_format(files)
+    cmd = args.check and ["--dry-run", "-Werror"] or ["-i"]
+
+    for file in files:
+        if not formatter.call(*cmd, file):
+            return False
+
+    return True
+
+
+def _format_cmake_files(args):
+    formatter = CmakeFormatterWrapper()
+    formatter.verify_version()
+
+    cmake_files = [
+        "CMakeLists.txt",
+        "sdk/CMakeLists.txt",
+        "frontend/CMakeLists.txt",
+        "backend/CMakeLists.txt",
+        "cmake/ConfigureFiles.cmake",
+    ]
+
+    cmd = args.check and ["--check"] or ["-i"]
+
+    for file in cmake_files:
+        if not formatter.call(*cmd, file):
+            return False
+
+    return True
+
+
+def _format_python_files(args):
+    formatter = BlackFormatterWrapper()
+    formatter.verify_version()
+
+    scripts = os.path.join(os.getcwd(), "scripts")
+    cmd = [scripts]
+
+    if args.check:
+        cmd.append("--check")
+
+    return formatter.call(*cmd)
+
+
+if __name__ == "__main__":
+
+    args = _parser()
+
+    if not _format_cpp_files(args):
+        sys.exit(1)
+
+    if not _format_cmake_files(args):
+        sys.exit(1)
+
+    if not _format_python_files(args):
+        sys.exit(1)
+
+    print("All files are correctly formatted!")
+    sys.exit(0)

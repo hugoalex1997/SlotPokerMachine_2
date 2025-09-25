@@ -1,7 +1,6 @@
 import _utils as utils
 
 
-
 def _install_package(package):
     utils.run_command("sudo", "apt", "install", "-y", package)
 

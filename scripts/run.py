@@ -15,6 +15,7 @@ def _parser():
 
     return parser.parse_args()
 
+
 if __name__ == "__main__":
 
     args = _parser()
@@ -26,9 +27,8 @@ if __name__ == "__main__":
 
     cmake_binary_dir = variables.get("cmake_binary_dir", "build")
     launcher = os.path.join(cmake_binary_dir, "frontend", "frontend")
-    print("Running application with binary: " +  os.path.relpath(launcher))
-    
-        
+    print("Running application with binary: " + os.path.relpath(launcher))
+
     dbg = ("gdb", "-ex", "run", "--args") if args.debug else ()
     process = sp.Popen([*dbg, launcher, *args.forward])
     process.wait()

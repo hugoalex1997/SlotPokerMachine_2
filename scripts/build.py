@@ -54,6 +54,7 @@ def _run_conan(data):
 
     return True
 
+
 def _link_compile_commands(data):
     # link compile_commands.json to root
     compile_commands = os.path.join(data.output, "compile_commands.json")
